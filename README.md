@@ -15,3 +15,17 @@
     - 點擊其他地方,已 highlight 的線要取消 highlight。
 
 若有其他 Bug 可以不予理會,也不需要改善程式架構,專注在加入新功能即可。
+
+## Build & Run
+
+Build:
+
+```bash
+ant
+```
+
+Run:
+
+```bash
+java -cp ./bin bgWork.Launcher
+```
