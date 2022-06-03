@@ -15,6 +15,8 @@ import Listener.CPHActionListener;
 import Pack.DragPack;
 import Pack.SendText;
 import bgWork.InitProcess;
+
+import mod.instance.*;
 import mod.instance.AssociationLine;
 import mod.instance.BasicClass;
 import mod.instance.CompositionLine;
@@ -63,9 +65,10 @@ public class CanvasPanelHandler extends PanelHandler
 			case 1:
 			case 2:
 			case 3:
+            case 4:
 				break;
-			case 4:
 			case 5:
+			case 6:
 				addObject(core.getCurrentFunc(), e.getPoint());
 				break;
 			default:
@@ -84,10 +87,11 @@ public class CanvasPanelHandler extends PanelHandler
 			case 1:
 			case 2:
 			case 3:
+			case 4:
 				addLine(core.getCurrentFunc(), dp);
 				break;
-			case 4:
 			case 5:
+			case 6:
 				break;
 			default:
 				break;
@@ -115,17 +119,17 @@ public class CanvasPanelHandler extends PanelHandler
 			{
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
-					case 0:
+					case 0: // basic class
 						((BasicClass) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
 						break;
-					case 1:
+					case 1: // useCase 
 						((UseCase) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
 						break;
-					case 5:
+					case 6: // group container
 						Point p = e.getPoint();
 						p.x -= members.elementAt(i).getLocation().x;
 						p.y -= members.elementAt(i).getLocation().y;
@@ -391,6 +395,9 @@ public class CanvasPanelHandler extends PanelHandler
 						break;
 					case 2:
 						((GeneralizationLine) funcObj).setConnect(dPack);
+                        break;
+                    case 3:
+                        ((DependencyLine) funcObj).setConnect(dPack);
 						break;
 					default:
 						break;
@@ -514,9 +521,12 @@ public class CanvasPanelHandler extends PanelHandler
 				((CompositionLine) obj).setSelect(isSelect);
 				break;
 			case 4:
+                ((DependencyLine) obj).setSelect(isSelect);
+                break;
+			case 5:
 				((GeneralizationLine) obj).setSelect(isSelect);
 				break;
-			case 5:
+			case 6:
 				((GroupContainer) obj).setSelect(isSelect);
 				break;
 			default:

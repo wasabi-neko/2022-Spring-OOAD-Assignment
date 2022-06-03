@@ -12,6 +12,7 @@ import javax.swing.JButton;
 
 import Listener.HandlerActionListener;
 import bgWork.InitProcess;
+import mod.instance.*;
 import mod.instance.AssociationLine;
 import mod.instance.BasicClass;
 import mod.instance.CompositionLine;
@@ -122,8 +123,10 @@ public class FuncPanelHandler extends PanelHandler
 			case 3:
 				return new ImageIcon("icon/composition_line.jpg");
 			case 4:
-				return new ImageIcon("icon/class.jpg");
+				return new ImageIcon("icon/composition_line.jpg");  // TODO: it's dependency line
 			case 5:
+				return new ImageIcon("icon/class.jpg");
+			case 6:
 				return new ImageIcon("icon/use_case.jpg");
 			default:
 				return null;
@@ -142,9 +145,11 @@ public class FuncPanelHandler extends PanelHandler
 				return new GeneralizationLine(core.getCanvasPanelHandler());
 			case 3:
 				return new CompositionLine(core.getCanvasPanelHandler());
-			case 4:
-				return new BasicClass(core.getCanvasPanelHandler());
+            case 4:
+                return new DependencyLine(core.getCanvasPanelHandler());
 			case 5:
+				return new BasicClass(core.getCanvasPanelHandler());
+			case 6:
 				return new UseCase(core.getCanvasPanelHandler());
 			default:
 				return null;
