@@ -17,40 +17,12 @@ import mod.IFuncComponent;
 import mod.ILinePainter;
 import java.lang.Math;
 
-public class AssociationLine extends JPanel
-		implements IFuncComponent, ILinePainter
+public class AssociationLine extends ConnectionLine
 {
-	JPanel				from;
-	int					fromSide;
-	Point				fp				= new Point(0, 0);
-	JPanel				to;
-	int					toSide;
-	Point				tp				= new Point(0, 0);
-	boolean				isSelect		= false;
-	int					selectBoxSize	= 50;
-	CanvasPanelHandler	cph;
-
 	public AssociationLine(CanvasPanelHandler cph)
 	{
-		this.setOpaque(false);
-		this.setVisible(true);
-		this.setMinimumSize(new Dimension(1, 1));
-		this.cph = cph;
+        super(cph);
 	}
-
-    public JPanel getFromPortPanel() {
-        JPanel portPanel = new JPanel();
-        portPanel.setSize(20, 20);
-        portPanel.setLocation(fp.x - 10, fp.y - 10);
-        return portPanel;
-    }
-
-    public JPanel getToPortPanel() {
-        JPanel portPanel = new JPanel();
-        portPanel.setSize(20, 20);
-        portPanel.setLocation(tp.x - 10, fp.y - 10);
-        return portPanel;
-    }
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -102,52 +74,6 @@ public class AssociationLine extends JPanel
 		System.out.println("to side " + toSide);
 	}
 
-	void renewConnect()
-	{
-		try
-		{
-			fp = getConnectPoint(from, fromSide);
-			tp = getConnectPoint(to, toSide);
-			this.reSize();
-		}
-		catch (NullPointerException e)
-		{
-			this.setVisible(false);
-			cph.removeComponent(this);
-		}
-	}
-
-	Point getConnectPoint(JPanel jp, int side)
-	{
-		Point temp = new Point(0, 0);
-		Point jpLocation = cph.getAbsLocation(jp);
-		if (side == new AreaDefine().TOP)
-		{
-			temp.x = (int) (jpLocation.x + jp.getSize().getWidth() / 2);
-			temp.y = jpLocation.y;
-		}
-		else if (side == new AreaDefine().RIGHT)
-		{
-			temp.x = (int) (jpLocation.x + jp.getSize().getWidth());
-			temp.y = (int) (jpLocation.y + jp.getSize().getHeight() / 2);
-		}
-		else if (side == new AreaDefine().LEFT)
-		{
-			temp.x = jpLocation.x;
-			temp.y = (int) (jpLocation.y + jp.getSize().getHeight() / 2);
-		}
-		else if (side == new AreaDefine().BOTTOM)
-		{
-			temp.x = (int) (jpLocation.x + jp.getSize().getWidth() / 2);
-			temp.y = (int) (jpLocation.y + jp.getSize().getHeight());
-		}
-		else
-		{
-			temp = null;
-			System.err.println("getConnectPoint fail:" + side);
-		}
-		return temp;
-	}
 
 	@Override
 	public void paintSelect(Graphics g)
@@ -164,15 +90,5 @@ public class AssociationLine extends JPanel
         g2d.setStroke(dashed);
         g2d.setColor(Color.CYAN);
         g2d.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
-	}
-
-	public boolean isSelect()
-	{
-		return isSelect;
-	}
-
-	public void setSelect(boolean isSelect)
-	{
-		this.isSelect = isSelect;
 	}
 }

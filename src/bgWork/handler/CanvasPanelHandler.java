@@ -115,35 +115,16 @@ public class CanvasPanelHandler extends PanelHandler
 		for (int i = 0; i < members.size(); i ++)
 		{
             // is click on port
-            if (core.isLine(members.elementAt(i)) >= 0) {
-                JPanel fromPort, toPort;
-                boolean lineSelected = false; 
+            if (members.elementAt(i) instanceof ConnectionLine) {
+                ConnectionLine line = (ConnectionLine) members.elementAt(i);
 
-                switch (core.isLine(members.elementAt(i))) {
-                    case 0:
-                        fromPort = ((AssociationLine) members.elementAt(i)).getFromPortPanel();
-                        toPort = ((AssociationLine) members.elementAt(i)).getToPortPanel();
+                JPanel fromPort = line.getFromPortPanel();
+                JPanel toPort = line.getToPortPanel();
 
-                        if (isInside(fromPort, e.getPoint()) || isInside(toPort, e.getPoint())) {
-                            System.out.println("test line"); // FIXME
-                            ((AssociationLine) members.elementAt(i)).setSelect(true);
-                            lineSelected = true;
-                        }
-                        break;
-                    // case 1:
-                    //     ((CompositionLine) funcObj).setConnect(dPack);
-                    //     break;
-                    // case 2:
-                    //     ((GeneralizationLine) funcObj).setConnect(dPack);
-                    //     break;
-                    // case 3:
-                    //     ((DependencyLine) funcObj).setConnect(dPack);
-                    //     break;
-                    default:
-                        break;
-                }
-                if (lineSelected) {
-                    continue;   // jump back to top of foreach member
+                if (isInside(fromPort, e.getPoint()) || isInside(toPort, e.getPoint())) {
+                    System.out.println("test line"); // FIXME
+                    line.setSelect(true);
+                    continue;   // jump back to for each members
                 }
             }
 
@@ -556,11 +537,11 @@ public class CanvasPanelHandler extends PanelHandler
 				((CompositionLine) obj).setSelect(isSelect);
 				break;
 			case 4:
-                ((DependencyLine) obj).setSelect(isSelect);
-                break;
-			case 5:
 				((GeneralizationLine) obj).setSelect(isSelect);
 				break;
+			case 5:
+                ((DependencyLine) obj).setSelect(isSelect);
+                break;
 			case 6:
 				((GroupContainer) obj).setSelect(isSelect);
 				break;
