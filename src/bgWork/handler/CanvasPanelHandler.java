@@ -110,24 +110,57 @@ public class CanvasPanelHandler extends PanelHandler
 
 	void selectByClick(MouseEvent e)
 	{
-		boolean isSelect = false;
+		boolean isSelectObj = false;
 		selectComp = new Vector <>();
 		for (int i = 0; i < members.size(); i ++)
 		{
+            // is click on port
+            if (core.isLine(members.elementAt(i)) >= 0) {
+                JPanel fromPort, toPort;
+                boolean lineSelected = false; 
+
+                switch (core.isLine(members.elementAt(i))) {
+                    case 0:
+                        fromPort = ((AssociationLine) members.elementAt(i)).getFromPortPanel();
+                        toPort = ((AssociationLine) members.elementAt(i)).getToPortPanel();
+
+                        if (isInside(fromPort, e.getPoint()) || isInside(toPort, e.getPoint())) {
+                            System.out.println("test line"); // FIXME
+                            ((AssociationLine) members.elementAt(i)).setSelect(true);
+                            lineSelected = true;
+                        }
+                        break;
+                    // case 1:
+                    //     ((CompositionLine) funcObj).setConnect(dPack);
+                    //     break;
+                    // case 2:
+                    //     ((GeneralizationLine) funcObj).setConnect(dPack);
+                    //     break;
+                    // case 3:
+                    //     ((DependencyLine) funcObj).setConnect(dPack);
+                    //     break;
+                    default:
+                        break;
+                }
+                if (lineSelected) {
+                    continue;   // jump back to top of foreach member
+                }
+            }
+
 			if (isInside(members.elementAt(i), e.getPoint()) == true
-					&& isSelect == false)
+					&& isSelectObj == false)
 			{
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
 					case 0: // basic class
 						((BasicClass) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
-						isSelect = true;
+						isSelectObj = true;
 						break;
 					case 1: // useCase 
 						((UseCase) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
-						isSelect = true;
+						isSelectObj = true;
 						break;
 					case 6: // group container
 						Point p = e.getPoint();
@@ -139,7 +172,7 @@ public class CanvasPanelHandler extends PanelHandler
 							((GroupContainer) members.elementAt(i))
 									.setSelect(true);
 							selectComp.add(members.elementAt(i));
-							isSelect = true;
+							isSelectObj = true;
 						}
 						else
 						{
@@ -150,11 +183,12 @@ public class CanvasPanelHandler extends PanelHandler
 					default:
 						break;
 				}
+
+                continue; // jump back to foreach members
 			}
-			else
-			{
-				setSelectAllType(members.elementAt(i), false);
-			}
+
+			
+            setSelectAllType(members.elementAt(i), false);
 		}
 		repaintComp();
 	}
@@ -402,6 +436,7 @@ public class CanvasPanelHandler extends PanelHandler
 					default:
 						break;
 				}
+                members.add(funcObj);
 				contextPanel.add(funcObj, 0);
 				break;
 		}

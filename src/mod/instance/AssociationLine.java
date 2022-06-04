@@ -3,6 +3,9 @@ package mod.instance;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.BasicStroke;
 import java.awt.Point;
 
 import javax.swing.JPanel;
@@ -24,7 +27,7 @@ public class AssociationLine extends JPanel
 	int					toSide;
 	Point				tp				= new Point(0, 0);
 	boolean				isSelect		= false;
-	int					selectBoxSize	= 5;
+	int					selectBoxSize	= 50;
 	CanvasPanelHandler	cph;
 
 	public AssociationLine(CanvasPanelHandler cph)
@@ -34,6 +37,20 @@ public class AssociationLine extends JPanel
 		this.setMinimumSize(new Dimension(1, 1));
 		this.cph = cph;
 	}
+
+    public JPanel getFromPortPanel() {
+        JPanel portPanel = new JPanel();
+        portPanel.setSize(20, 20);
+        portPanel.setLocation(fp.x - 10, fp.y - 10);
+        return portPanel;
+    }
+
+    public JPanel getToPortPanel() {
+        JPanel portPanel = new JPanel();
+        portPanel.setSize(20, 20);
+        portPanel.setLocation(tp.x - 10, fp.y - 10);
+        return portPanel;
+    }
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -45,12 +62,14 @@ public class AssociationLine extends JPanel
 				fp.y - this.getLocation().y);
 		tpPrime = new Point(tp.x - this.getLocation().x,
 				tp.y - this.getLocation().y);
-		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
-		paintArrow(g, tpPrime);
+
 		if (isSelect == true)
 		{
 			paintSelect(g);
 		}
+
+		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
+		paintArrow(g, tpPrime);
 	}
 
 	@Override
@@ -131,11 +150,20 @@ public class AssociationLine extends JPanel
 	}
 
 	@Override
-	public void paintSelect(Graphics gra)
+	public void paintSelect(Graphics g)
 	{
-		gra.setColor(Color.BLACK);
-		gra.fillRect(fp.x, fp.y, selectBoxSize, selectBoxSize);
-		gra.fillRect(tp.x, tp.y, selectBoxSize, selectBoxSize);
+		Point fpPrime;
+		Point tpPrime;
+		fpPrime = new Point(fp.x - this.getLocation().x,
+				fp.y - this.getLocation().y);
+		tpPrime = new Point(tp.x - this.getLocation().x,
+				tp.y - this.getLocation().y);
+
+        Graphics2D g2d = (Graphics2D) g.create();
+        Stroke dashed = new BasicStroke(5);
+        g2d.setStroke(dashed);
+        g2d.setColor(Color.CYAN);
+        g2d.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
 	}
 
 	public boolean isSelect()
