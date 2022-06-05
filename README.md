@@ -1,6 +1,6 @@
 # 2022-Spring-OOAD Assignment
 
-> this is a assignment from 2022-spring-OOAD
+> this is a assignment from 2022-spring-OOAD \
 > Note: all the code from init commit is the "other people's code" in the assignment.
 
 ## Requirement
